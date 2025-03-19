@@ -1,0 +1,152 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0; 
+    padding: 0;
+    background: #f0f0f0;
+    color: #333;
+}
+
+/* Shared container styles */
+.login-container, .dashboard-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 5rem auto;
+    background: #fff;
+    padding: 2rem;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+.dashboard-container h2 {
+    margin-top: 60px;
+    border-bottom: 2px solid #4caf50;
+    padding-bottom: 0.3rem;
+    color: #2e7d32;
+}
+
+/* Form styles */
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="date"] {
+    width: calc(100% - 20px);
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+button {
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    border: none;
+    background: #4285f4;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 3px;
+}
+button:hover {
+    background: #357ae8;
+}
+
+/* Table styles with green palette */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1rem;
+}
+table, th, td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    text-align: left;
+}
+table th {
+    background-color: #2e7d32;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.7rem;
+}
+table tr:nth-child(odd) {
+    background-color: #e8f5e9;  /* very light green */
+}
+table tr:nth-child(even) {
+    background-color: #c8e6c9;  /* light green */
+}
+td input[type="text"],
+td input[type="password"],
+td input[type="number"] {
+    width: 100%;
+    padding: 0.4rem;
+    box-sizing: border-box;
+}
+
+/* Logout button */
+.logout {
+    float: right;
+    text-decoration: none;
+    margin-top: -2rem;
+    padding: 0.5rem 1rem;
+    background: #f44336;
+    color: #fff;
+    border-radius: 3px;
+}
+.logout:hover {
+    background: #e53935;
+}
+
+/* Edit form styling */
+.edit-form {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    background: #eef;
+    border-radius: 3px;
+}
+
+/* New style for Remove buttons in tables */
+.remove-button {
+    background: #c62828;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.remove-button:hover {
+    background: #b71c1c;
+}
+
+/* Updated Edit form styling with a thicker border */
+.mini-form {
+    border: 2px solid #4c8caf;
+    padding: 15px;
+    margin: 20px 0;
+    background-color: #f1f7fb;
+    border-radius: 6px;
+}
+.mini-form button {
+    margin-top: 5px;
+}
+
+/* New style for teacher credentials form */
+.teacher-update-form {
+    margin-top: 80px;
+    border: 2px solid #81c784;
+    padding: 20px;
+    background-color: #f1fff1;
+    border-radius: 6px;
+}
+
+.error-banner {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+}

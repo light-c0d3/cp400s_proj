@@ -35,17 +35,19 @@ Try entering:
 
 🚪 File Structure Overview
 
-cp400s_proj/
-│
-├── dashboard.php               # Teacher Dashboard
-├── student_dashboard.php       # Student Dashboard
-├── secure_login.php            # Secure login with protection
-├── insecure_login.php          # Insecure login with SQL injection vulnerability
-├── logout.php                  # Logs out users
-├── db_secure.php               # Secure database connection
-├── db_insecure.php             # Insecure database connection
-├── style.css                   # Styling for UI
-└── index.php                   # Landing page with login options and info
+```
+📁 cp400s_proj/
+├── 📄 dashboard.php            - Teacher Dashboard (Admin Panel)
+├── 📄 student_dashboard.php     - Student Dashboard (Individual Student View)
+├── 📄 secure_login.php          - Secure login form with prepared statements
+├── 📄 insecure_login.php        - Insecure login form (for SQL injection demonstration)
+├── 📄 logout.php                - Logs out current session
+├── 📄 db_secure.php             - Secure database connection file
+├── 📄 db_insecure.php           - Insecure database connection file
+├── 📄 index.php                 - Home page (info and login buttons)
+├── 📄 style.css                 - Global styling for layout and forms
+└── 📄 readME.md                 - Project documentation
+```
 
 📊 Database Schema Overview
 

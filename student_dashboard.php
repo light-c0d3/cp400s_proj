@@ -39,6 +39,21 @@ while ($row = $result->fetch_assoc()) {
     $assignments[] = $row;
 }
 $stmt->close();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
+    $newPassword = $_POST['new_password'];
+    $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+    // DB connection already established earlier; no need to require again
+    $update_stmt = $conn->prepare("UPDATE users SET password = ? WHERE user_id = ?");
+    $update_stmt->bind_param("si", $hashedPassword, $student_id);
+    if ($update_stmt->execute()) {
+        echo "<p class='success-banner'>Password updated successfully.</p>";
+    } else {
+        echo "<p class='error-banner'>Failed to update password. Please try again.</p>";
+    }
+    $update_stmt->close();
+}
+
 $conn->close();
 ?>
 
@@ -47,28 +62,6 @@ $conn->close();
 <head>
     <title>Student Dashboard</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <style>
-        /* Additional styling if needed */
-        .dashboard-container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 1.5rem;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border-radius: 5px;
-        }
-        .error-banner {
-            background-color: #f44336;
-            color: white;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            text-align: center;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
 <div class="dashboard-container">
@@ -140,6 +133,14 @@ $conn->close();
             echo "<p>No grades available yet to calculate statistics.</p>";
         }
     ?>
+
+    <h2>Update Your Password 🔒</h2>
+    <div class="mini-form">
+        <form method="POST" action="">
+            <input type="password" name="new_password" placeholder="Enter New Password" required>
+            <button type="submit" name="update_password">Update Password</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

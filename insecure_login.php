@@ -2,7 +2,6 @@
 // insecure_login.php
 // This insecure login page is intentionally vulnerable (direct SQL concatenation)
 // to demonstrate SQL injection. It uses password_verify() for password checking.
-// DO NOT USE IN PRODUCTION.
 
 session_start(); // Start a new session or resume the existing one to track user login state.
 // Clear any old session data to ensure a fresh start.
@@ -14,7 +13,6 @@ require_once 'db_insecure.php'; // insecure DB connection
 $error_message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // WARNING: No input sanitization or escaping here.
     // Directly using user input in SQL queries introduces SQL Injection risks.
     // An attacker can inject SQL code in the username field to manipulate the query.
     $username = $_POST['username'];
@@ -24,7 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // it directly embeds user input into the query string.
     // Example attack: inputting ' OR '1'='1 would allow unauthorized login.
     $sql = "SELECT password, role FROM users WHERE username = '$username' LIMIT 1";
-    $result = $conn->query($sql);
+    
+    if ($conn->multi_query($sql)) {
+       $result = $conn->store_result();
+    }
 
     // Check if any user exists with the given username.
     // In an injection attack, this could always return true.
@@ -34,17 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_role       = $row['role'];
 
         if (!empty($hashed_password)) {
-            // Use password_verify to securely compare hashed password from DB with user input.
-            // This part is secure, assuming the retrieved password wasn't obtained via injection.
-            if (password_verify($password, $hashed_password)) {
-                // Set session variables on successful login.
-                // These are used to identify the user and their role in subsequent pages.
+            // Plain text comparison for demonstration purposes
+            if ($password === $hashed_password) {
                 $_SESSION['username'] = $username;
                 $_SESSION['mode']     = 'insecure';
                 $_SESSION['role']     = $user_role;
-
-                // Redirect based on role.
-                // Ensure role-based access control is applied in the target pages.
                 if ($user_role === 'teacher') {
                     header("Location: dashboard.php");
                     exit();
@@ -52,8 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header("Location: student_dashboard.php");
                     exit();
                 } else {
-                    // Provide specific error messages for feedback.
-                    // In production, avoid detailed error messages to reduce information leakage.
                     $error_message = "Unknown user role: " . htmlspecialchars($user_role);
                 }
             } else {
@@ -89,8 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="login-container">
     <?php if (!empty($error_message)): ?>
-        // Display any login error message in a styled error banner.
-        // htmlspecialchar is used to prevent XSS (cross-site scripting) when outputting errors.
+        <!-- Display any login error message in a styled error banner.
+             htmlspecialchars is used to prevent XSS (cross-site scripting) when outputting errors. -->
         <div class="error-banner"><?php echo htmlspecialchars($error_message); ?></div>
     <?php endif; ?>
 

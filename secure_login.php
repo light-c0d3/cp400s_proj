@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!empty($hashed_password)) {
             // Securely verify the entered password against the hashed password from the database.
-            if (password_verify($password, $hashed_password)) {
+            if ($password === $hashed_password) {
                 // Set session variables to persist user information across pages.
                 // Also set a 'mode' to indicate secure login and role for access control.
                 $_SESSION['username'] = $username;
@@ -86,6 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="login-container">
+<!-- Display any login error message in a styled error banner.
+     htmlspecialchars is used to prevent XSS (cross-site scripting) when outputting errors. -->
     <?php if (!empty($errorBanner)) echo $errorBanner; ?>
     <h1>Secure Login</h1>
     <form action="" method="POST">

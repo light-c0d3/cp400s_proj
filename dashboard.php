@@ -31,13 +31,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $studentPassword = $_POST['student_password'];
             if ($mode === 'secure') {
                 $stmt = $conn->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, 'student')");
-                $hashedPass = password_hash($studentPassword, PASSWORD_BCRYPT);
+                $hashedPass = $studentPassword;
                 $stmt->bind_param("ss", $newStudentName, $hashedPass);
                 $stmt->execute();
                 $new_student_id = $conn->insert_id;
                 $stmt->close();
             } else {
-                $hashed = password_hash($studentPassword, PASSWORD_BCRYPT);
+                $hashed = $studentPassword;
                 $sql = "INSERT INTO users (username, password, role) VALUES ('" . $conn->real_escape_string($newStudentName) . "', '" . $conn->real_escape_string($hashed) . "', 'student')";
                 $conn->query($sql);
                 $new_student_id = $conn->insert_id;
@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if (!empty($newPassword)) {
                 $fields[] = "password = ?";
                 $types .= "s";
-                $hashed = password_hash($newPassword, PASSWORD_BCRYPT);
+                $hashed = $newPassword;
                 $params[] = $hashed;
             }
             if (!empty($fields)) {
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $set[] = "username = '" . $conn->real_escape_string($newUsername) . "'";
             }
             if (!empty($newPassword)) {
-                $hashed = password_hash($newPassword, PASSWORD_BCRYPT);
+                $hashed = $newPassword;
                 $set[] = "password = '" . $conn->real_escape_string($hashed) . "'";
             }
             if (!empty($set)) {
@@ -283,13 +283,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $studentId = $_POST['student_id'];
         $newPassword = $_POST['new_password'];
         if ($mode === 'secure') {
-            $hashed = password_hash($newPassword, PASSWORD_BCRYPT);
+            $hashed = $newPassword;
             $stmt = $conn->prepare("UPDATE users SET password = ? WHERE user_id = ? AND role = 'student'");
             $stmt->bind_param("si", $hashed, $studentId);
             $stmt->execute();
             $stmt->close();
         } else {
-            $hashed = password_hash($newPassword, PASSWORD_BCRYPT);
+            $hashed = $newPassword;
             $sql = "UPDATE users SET password = '$hashed' WHERE user_id = $studentId AND role = 'student'";
             $conn->query($sql);
         }
@@ -298,7 +298,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST['update_teacher_credentials'])) {
         $newUsername = $_POST['new_teacher_username'];
         $newPassword = $_POST['new_teacher_password'];
-        $hashed = password_hash($newPassword, PASSWORD_BCRYPT);
+        $hashed = $newPassword;
         if ($mode === 'secure') {
             $stmt = $conn->prepare("UPDATE users SET username = ?, password = ? WHERE role = 'teacher' AND username = ?");
             $stmt->bind_param("sss", $newUsername, $hashed, $_SESSION['username']);
@@ -372,7 +372,7 @@ if ($result) {
             <tr>
                 <th>ID 🔑</th>
                 <th>Username</th>
-                <th>Password</th>
+                
                 <th>Actions</th>
             </tr>
         </thead>
@@ -381,7 +381,7 @@ if ($result) {
             <tr>
                 <td><?php echo $student['user_id']; ?></td>
                 <td><?php echo htmlspecialchars($student['username']); ?></td>
-                <td><?php echo htmlspecialchars($student['password']); ?></td>
+                
                 <td>
                     <!-- Combined Remove and Edit Forms inline for Students -->
                     <div class="mini-form">
